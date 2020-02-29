@@ -1,3 +1,5 @@
+Forked from https://github.com/MatCyt/Markov-Chain
+
 # Marketing-Attribution_Markov-Chain
 R based marketing attribution and campaign budget optimization using Markov Chains
 
