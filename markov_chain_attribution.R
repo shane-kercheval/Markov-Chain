@@ -9,13 +9,14 @@ pacman::p_load(data.table, dplyr, ChannelAttribution, ggplot2, readr)
 campaign_data = fread("sample_datasets/campaign_data.csv") %>% arrange(cookie, time)
 campaign_budget_daily = fread("sample_datasets/budget_sample_daily.csv")
 
+campaign_data <- campaign_data %>% head(10000)
+
 summary(campaign_data)
 unique(campaign_data$interaction)
 summary(campaign_budget_daily)
 
 
 campaign_data %>%
-    head(400) %>%
     group_by(cookie) %>%
     arrange(time) %>%
     mutate(cumsum_conv=cumsum(conversion),
@@ -24,7 +25,8 @@ campaign_data %>%
     ungroup() %>%
     select(-lag_cumsum_conv) %>%
     as.data.frame() %>%
-    arrange(cookie, time)
+    arrange(cookie, time) %>%
+    rt_peak()
 
 ### Prepare the files - Split Paths ----
 df_split = campaign_data %>%
@@ -36,7 +38,7 @@ df_split = campaign_data %>%
     mutate(path_id = paste0(cookie, path_no)) %>%
     arrange(cookie, time)
 
-head(df_split, 100) %>% as.data.frame()
+df_split %>% rt_peak()
 
 ### Prepare the file - Create the paths ----
 df_paths = df_split %>%
